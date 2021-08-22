@@ -1,0 +1,7 @@
+{
+  "name": "family-recipes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
