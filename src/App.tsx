@@ -1,16 +1,20 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonHeader,
   IonIcon,
   IonLabel,
+  IonMenuToggle,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
+import RecipeList from './pages/RecipeList';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 
@@ -32,41 +36,52 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
-const App: React.FC = () => (
-  <IonApp>
+import { MenuNavigator } from './components/Menu';
+import { Login } from './pages/Login'
+// import { AppContextProvider } from './Data/Context';
+import AppProvider from './Data/CTX/AppContext';
+import { Signup } from './pages/Signup';
+import RedirectToLogin from './components/RedirectToLogin';
+const App: React.FC = () => {
+  return (
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+      <AppProvider>
+        <IonicApp />
+      </AppProvider>
     </IonReactRouter>
+  );
+};
+const IonicApp: React.FC = () => (
+  <IonApp>
+    <MenuNavigator />
+    <IonTabs>
+      <IonRouterOutlet>
+        <Route exact path="/tab/recipes">
+          <RecipeList />
+        </Route>
+        {/* <Route path="/account" component={Account} /> */}
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        {/* <Route path="/support" component={Support} /> */}
+        <Route path="/logout" render={() => {
+          return <RedirectToLogin />;
+        }} />
+      </IonRouterOutlet>
+      <IonTabBar slot="bottom">
+        <IonTabButton tab="tab1" href="/tab/recipes">
+          <IonIcon icon={triangle} />
+          <IonLabel>Tab 1</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="tab2" href="/tab2">
+          <IonIcon icon={ellipse} />
+          <IonLabel>Tab 2</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="tab3" href="/tab3">
+          <IonIcon icon={square} />
+          <IonLabel>Tab 3</IonLabel>
+        </IonTabButton>
+      </IonTabBar>
+    </IonTabs>
   </IonApp>
 );
 

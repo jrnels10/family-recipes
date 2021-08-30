@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "family-recipes",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
