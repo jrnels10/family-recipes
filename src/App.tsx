@@ -13,7 +13,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { documentTextOutline, ellipse, square, triangle } from 'ionicons/icons';
 import RecipeList from './pages/RecipeList';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -42,6 +42,7 @@ import { Login } from './pages/Login'
 import AppProvider from './Data/CTX/AppContext';
 import { Signup } from './pages/Signup';
 import RedirectToLogin from './components/RedirectToLogin';
+
 const App: React.FC = () => {
   return (
     <IonReactRouter>
@@ -69,7 +70,7 @@ const IonicApp: React.FC = () => (
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
         <IonTabButton tab="tab1" href="/tab/recipes">
-          <IonIcon icon={triangle} />
+          <IonIcon icon={documentTextOutline} />
           <IonLabel>Tab 1</IonLabel>
         </IonTabButton>
         <IonTabButton tab="tab2" href="/tab2">

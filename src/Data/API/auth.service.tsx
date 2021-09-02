@@ -5,7 +5,6 @@ export default class AuthService extends BaseHttpService{
     async signin(existingUser:ISignUser) {
         const {email, password}=existingUser;
         const result = await this.post(`auth/signin`, { email, password });
-        debugger
         if (result) {
           const accessToken = result.data.accessToken;
           this.saveToken(accessToken);

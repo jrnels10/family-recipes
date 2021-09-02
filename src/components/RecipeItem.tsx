@@ -33,41 +33,42 @@ interface RecipeItemProps {
   // sessions: Session[];
 }
 
-const SpeakerItem: React.FC<RecipeItemProps> = ({ recipe }) => {
+const RecipeItem: React.FC<RecipeItemProps> = ({ recipe }) => {
+  console.log(recipe)
   return (
     <>
-      <IonCard className="speaker-card">
+      <IonCard className="recipe-card w-100">
         <IonCardHeader>
-          <IonItem button detail={false} lines="none" className="speaker-item" routerLink={`/tabs/speakers/${recipe.title}`}>
+          <IonItem button detail={false} lines="none" className="recipe-item" routerLink={`/tabs/speakers/${recipe.title}`}>
             <IonAvatar slot="start">
-              <img src={process.env.PUBLIC_URL + recipe.image} alt="Speaker profile pic" />
+              <img src={recipe.photos[0].fileUrl} alt="Recipe profile pic" />
             </IonAvatar>
             <IonLabel>
               <h2>{recipe.title}</h2>
-              <p>{recipe.chef}</p>
+              {/* <IonItem lines="none" className='header-link' detail={false} routerLink={`/tabs/recipe/${recipe.chef}`} > */}
+                <p>by {recipe.chef}</p>
+              {/* </IonItem> */}
             </IonLabel>
           </IonItem>
         </IonCardHeader>
 
         <IonCardContent>
-          {/* <IonList lines="none">
-            {sessions.map(session => (
-              <IonItem detail={false} routerLink={`/tabs/speakers/sessions/${session.id}`} key={session.name}>
-                <IonLabel>
-                  <h3>{session.name}</h3>
-                </IonLabel>
-              </IonItem>
-            ))}
-            <IonItem detail={false} routerLink={`/tabs/speakers/${speaker.id}`}>
+          <IonList lines="none">
+            <IonItem detail={false} routerLink={`/tabs/recipe/${recipe.title}`} >
               <IonLabel>
-                <h3>About {speaker.name}</h3>
+                <h3>{recipe.title}</h3>
               </IonLabel>
             </IonItem>
-          </IonList> */}
+            {/* <IonItem detail={false} routerLink={`/tabs/speakers/${speaker.id}`}> */}
+            <IonLabel>
+              <h3>{recipe.decription}</h3>
+            </IonLabel>
+            {/* </IonItem> */}
+          </IonList>
         </IonCardContent>
       </IonCard>
     </>
   );
 };
 
-export default SpeakerItem;
+export default RecipeItem;

@@ -13,8 +13,11 @@ export default class BaseHttpService {
 
     async get(endpoint: any, options = {}) {
         Object.assign(options, this._getCommonOptions());
-        return axios.get(`${this.BASE_URL}/${endpoint}`, options)
-            .catch((error: {} | undefined) => this._handleHttpError(error));
+        try {
+            return axios.get(`${this.BASE_URL}/${endpoint}`, options);
+        } catch (error: any|undefined) {
+            this._handleHttpError(error)
+        }
     }
 
     async post(endpoint: any, data = {}, options = {}) {

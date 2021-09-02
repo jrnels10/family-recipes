@@ -1,4 +1,5 @@
 import AuthService from '../API/auth.service';
+import { IUser } from '../CTX/types';
 
 export class User {
     private _api: any;
@@ -14,7 +15,7 @@ export class User {
         this.firstName = props.firstName;
         this.lastName = props.lastName;
         this.password = props.password;
-        this.isLoggedin = props.isLoggedin;
+        this.isLoggedin = props.isLoggedin ? false : true;
     }
 
     async signUp() {
@@ -29,10 +30,10 @@ export class User {
     }
     async signIn() {
         const res = await this._api.signin({ ...this });
-        debugger
         this.isLoggedin = true;
     };
     signOut() {
+        this.isLoggedin = false;
         this._api.signout();
     }
 };

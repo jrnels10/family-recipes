@@ -2,8 +2,13 @@ import AuthService from "./auth.service";
 import BaseHttpService from "./base-http.service";
 
 export default class RecipeService extends BaseHttpService{
- async GetRecipes(){
+ async getRecipes(){
      const res = await this.get('./assets/RecipeList.json');
      debugger
+ };
+
+ async getAllRecipes(){
+     const res = await this.get('recipe/getall');
+     return res;
  }
 }

@@ -1,12 +1,15 @@
 import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { useContext } from 'react';
-import SpeakerItem from '../components/RecipeItem';
+import { useContext, useEffect } from 'react';
+import RecipeItem from '../components/RecipeItem';
 import { AppContext } from '../Data/CTX/AppContext';
-import './Tab1.css';
+import './recipeList.scss';
 
 const RecipeList: React.FC = () => {
-  const { recipes, user, addRecipe } = useContext(AppContext);
-
+  const { recipes, recipeApi } = useContext(AppContext);
+  useEffect(() => {
+    // const res= await recipeApi.getAllRecipes();
+    return () => { }
+  }, [])
   return (
     <IonPage id="recipe-list">
       <IonHeader translucent={true}>
@@ -18,19 +21,19 @@ const RecipeList: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonGrid fixed>
-          <IonRow>
-            <div>
+        <IonGrid fixed={true}>
+          <IonRow style={{width:'100%'}}>
+            {/* <div className='test'> */}
               {recipes.map((recipe, i) => (
-                <IonCol size="12" size-md="6" key={recipe.title}>
-                  <SpeakerItem
+                <IonCol size="12" size-md="12" key={recipe.title}>
+                  <RecipeItem
                     key={recipe.title}
                     recipe={recipe}
                   />
-                  <div key={i}>{recipe.title}</div>
+                  {/* <div key={i}>{recipe.title}</div> */}
                 </IonCol>
               ))}
-            </div>
+            {/* </div> */}
           </IonRow>
         </IonGrid>
       </IonContent>

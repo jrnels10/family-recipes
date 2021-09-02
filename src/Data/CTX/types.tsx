@@ -1,10 +1,14 @@
-
+export interface IRecipeImage {
+    id:number,
+    fileName:string,
+    fileUrl:string
+}
 
 export interface IRecipe {
     title: string,
     chef: string,
     decription: string,
-    image: string
+    photos: IRecipeImage[]
 };
 
 
@@ -31,15 +35,14 @@ export type UserContextState = {
     user: IUser,
     setUserAcc: (user: IUser) => void
 };
-// type Foobar = 'FOO' | 'BAR';?/
-// export type AppContextState = RecipeContextState | UserContextState
 
 export type AppContextState = {
     recipes: IRecipe[];
     addRecipe: (recipe: IRecipe) => void;
     user: IUser;
     setUserAcc: (user: IUser) => void;
-    // api:any
+    loadingRecipes:boolean;
+    recipeApi:any
 }
 
 export function combineStates<S extends any>(states: S) {
