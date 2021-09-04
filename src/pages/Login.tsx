@@ -45,7 +45,7 @@ export const Login: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsernam
       const user = new User({ email, password, history, errorHandler: setUserError });
       await user.signIn();
       setUserAcc(user);
-      history.push('/tab/recipes', { direction: 'none' });
+      history.push('/recipes', { direction: 'none' });
     }
   };
 

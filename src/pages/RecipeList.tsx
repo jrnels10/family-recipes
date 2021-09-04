@@ -22,18 +22,15 @@ const RecipeList: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonGrid fixed={true}>
-          <IonRow style={{width:'100%'}}>
-            {/* <div className='test'> */}
-              {recipes.map((recipe, i) => (
-                <IonCol size="12" size-md="12" key={recipe.title}>
-                  <RecipeItem
-                    key={recipe.title}
-                    recipe={recipe}
-                  />
-                  {/* <div key={i}>{recipe.title}</div> */}
-                </IonCol>
-              ))}
-            {/* </div> */}
+          <IonRow style={{ width: '100%' }}>
+            {recipes.map((recipe, i) => (
+              <IonCol size="12" size-md="12" key={recipe.title}>
+                <RecipeItem
+                  key={recipe.title}
+                  recipe={recipe}
+                />
+              </IonCol>
+            ))}
           </IonRow>
         </IonGrid>
       </IonContent>

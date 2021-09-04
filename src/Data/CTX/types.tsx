@@ -5,9 +5,10 @@ export interface IRecipeImage {
 }
 
 export interface IRecipe {
+    id?:number,
     title: string,
     chef: string,
-    decription: string,
+    description: string,
     photos: IRecipeImage[]
 };
 

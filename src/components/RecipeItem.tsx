@@ -1,6 +1,7 @@
 import React from 'react';
 // import { Session } from '../models/Schedule';
 // import { Speaker } from '../models/Speaker';
+import placeHolderImage from './../assets/Images/placeholder.jpg';
 import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react';
 import { IRecipe } from '../Data/CTX/types';
 
@@ -35,18 +36,20 @@ interface RecipeItemProps {
 
 const RecipeItem: React.FC<RecipeItemProps> = ({ recipe }) => {
   console.log(recipe)
+
+  const recipeImage = recipe.photos.length? recipe.photos[0].fileUrl:placeHolderImage;
   return (
     <>
-      <IonCard className="recipe-card w-100">
+      <IonCard className="recipe-card ">
         <IonCardHeader>
-          <IonItem button detail={false} lines="none" className="recipe-item" routerLink={`/tabs/speakers/${recipe.title}`}>
+          <IonItem button detail={false} lines="none" className="recipe-item" routerLink={`/recipe/${recipe.id}`}>
             <IonAvatar slot="start">
-              <img src={recipe.photos[0].fileUrl} alt="Recipe profile pic" />
+              <img src={recipeImage} alt="Recipe profile pic" />
             </IonAvatar>
             <IonLabel>
               <h2>{recipe.title}</h2>
               {/* <IonItem lines="none" className='header-link' detail={false} routerLink={`/tabs/recipe/${recipe.chef}`} > */}
-                <p>by {recipe.chef}</p>
+              <p>by {recipe.chef}</p>
               {/* </IonItem> */}
             </IonLabel>
           </IonItem>
@@ -54,16 +57,16 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ recipe }) => {
 
         <IonCardContent>
           <IonList lines="none">
-            <IonItem detail={false} routerLink={`/tabs/recipe/${recipe.title}`} >
+            {/* <IonItem detail={false} routerLink={`/tabs/recipe/${recipe.title}`} >
               <IonLabel>
                 <h3>{recipe.title}</h3>
               </IonLabel>
+            </IonItem> */}
+            <IonItem detail={false} >
+              <IonLabel>
+                <h3>{recipe.description}</h3>
+              </IonLabel>
             </IonItem>
-            {/* <IonItem detail={false} routerLink={`/tabs/speakers/${speaker.id}`}> */}
-            <IonLabel>
-              <h3>{recipe.decription}</h3>
-            </IonLabel>
-            {/* </IonItem> */}
           </IonList>
         </IonCardContent>
       </IonCard>

@@ -32,7 +32,9 @@ export const AppContext = createContext<AppContextState>(
 );
 
 const AppProvider: FC = ({ children }) => {
-    const recipeApi = new RecipeService({ history: null, errorHandler: null });
+    const history = useHistory();
+    const [errorHandler, setErrorHandler]=useState();
+    const recipeApi = new RecipeService({ history: history, errorHandler: setErrorHandler });
     const [user, setUser] = useState<IUser>(userDefaultValues.user);
     const [loadingRecipes, setLoadingRecipes] = useState<boolean>(true);
     const [recipes, setRecipes] = useState<IRecipe[]>(recipeDefaultValues.recipes);

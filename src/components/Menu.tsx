@@ -6,9 +6,9 @@ import { AppContext } from '../Data/CTX/AppContext';
 
 const routes = {
     appPages: [
-        { title: 'Recipes', path: '/tab/recipes', icon: documentTextOutline, authenticated: false },
-        { title: 'New Recipe', path: '/tabs/new-recipe', icon: pencilOutline, authenticated: true },
-        { title: 'Map', path: '/tabs/map', icon: mapOutline, authenticated: false },
+        { title: 'Recipes', path: '/recipes', icon: documentTextOutline, authenticated: false },
+        { title: 'New Recipe', path: '/new-recipe', icon: pencilOutline, authenticated: true },
+        // { title: 'Map', path: '/tabs/map', icon: mapOutline, authenticated: false },
         { title: 'About', path: '/tabs/about', icon: informationCircleOutline, authenticated: false },
     ],
     loggedInPages: [
