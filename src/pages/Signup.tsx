@@ -16,11 +16,11 @@ interface LoginProps extends OwnProps, DispatchProps { }
 
 
 export const Signup: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsername: setUsernameAction }) => {
-  const {   } = useContext(AppContext);
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
+  const { setUserAcc } = useContext(AppContext);
+  const [email, setEmail] = useState('jrnels10@gmail.com');
+  const [firstName, setFirstName] = useState('jacob');
+  const [lastName, setLastName] = useState('nelson');
+  const [password, setPassword] = useState('Jrnels10!');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
@@ -48,14 +48,18 @@ export const Signup: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUserna
     if (!email || !firstName || !lastName || !password || !pattern.test(password)) {
       return;
     }
-    const user = new User({ email, firstName, lastName, password })
-    if (user && password) {
-      // const res = await api.signup(user);
-      debugger
-      await //setUserAcc(true);
-      // await setUsernameAction(username);
+    const user = new User({ email, firstName, lastName, password });
+    const accntCreated = await user.signUp(setUserAcc);
+    if (accntCreated){
       history.push('/login', { direction: 'none' });
     }
+    // if (user && password) {
+    //   // const res = await api.signup(user);
+    //   debugger
+    //   await //setUserAcc(true);
+    //   // await setUsernameAction(username);
+    //   history.push('/login', { direction: 'none' });
+    // }
   };
 
   return (

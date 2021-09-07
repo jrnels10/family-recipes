@@ -5,7 +5,7 @@
   .recipe-card {
     display: flex;
     flex-direction: column;
-
+    margin: 10px 15px;
     //   .header-link{
     // }
   }
@@ -65,4 +65,29 @@
 .select-icon {
   width: 18px !important;
   height: 18px;
+}
+
+.recipe-background img {
+  width: 70px;
+  border-radius: 50%;
+  margin-top: calc(-1 * var(--ion-safe-area-top));
+}
+
+.recipe-img {
+  width: 70px;
+  height: 70px;
+}
+
+
+.spin{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+ion-spinner {
+  width: 38px;
+  height: 38px;
+  stroke: #444;
+  fill: #222;
 }

@@ -35,22 +35,18 @@ interface RecipeItemProps {
 }
 
 const RecipeItem: React.FC<RecipeItemProps> = ({ recipe }) => {
-  console.log(recipe)
-
-  const recipeImage = recipe.photos.length? recipe.photos[0].fileUrl:placeHolderImage;
+  const recipeImage = recipe.photos && recipe.photos.length? recipe.photos[0].fileUrl:placeHolderImage;
   return (
     <>
-      <IonCard className="recipe-card ">
+      <IonCard className="recipe-card " style={{ width: '100%' }}>
         <IonCardHeader>
           <IonItem button detail={false} lines="none" className="recipe-item" routerLink={`/recipe/${recipe.id}`}>
-            <IonAvatar slot="start">
-              <img src={recipeImage} alt="Recipe profile pic" />
+            <IonAvatar slot="start" className='recipe-img'>
+              <img  src={recipeImage} alt="Recipe profile pic" />
             </IonAvatar>
             <IonLabel>
               <h2>{recipe.title}</h2>
-              {/* <IonItem lines="none" className='header-link' detail={false} routerLink={`/tabs/recipe/${recipe.chef}`} > */}
               <p>by {recipe.chef}</p>
-              {/* </IonItem> */}
             </IonLabel>
           </IonItem>
         </IonCardHeader>

@@ -9,19 +9,14 @@ export default class AuthService extends BaseHttpService{
           const accessToken = result.data.accessToken;
           this.saveToken(accessToken);
         }
-        return result;
+        return result.status;
       }
     
       async signup(newUser:ISignUser) {
         return await this.post(`auth/signup`, { ...newUser });
       }
       async signInToken() {
-        const res = await this.get(`auth/signInToken`);
-        if (res && res.status === 200) {
-          return res.data;
-        } else {
-          console.log(res)
-        }
+       return await this.get(`auth/signInToken`);
       }
     
       async signout() {

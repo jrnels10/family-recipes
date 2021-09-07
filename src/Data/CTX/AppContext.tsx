@@ -14,6 +14,7 @@ const recipeDefaultValues: RecipeContextState = {
 
 const userDefaultValues: UserContextState = {
     user: {
+        validated:false,
         isLoggedin: false,
         email: '',
         firstName: '',
@@ -26,14 +27,15 @@ export const AppContext = createContext<AppContextState>(
     {
         ...recipeDefaultValues,
         ...userDefaultValues,
-        loadingRecipes:true,
-        recipeApi: () => null
+        loadingRecipes: true,
+        recipeApi: () => null,
+        getRecipes: () => null
     }
 );
 
 const AppProvider: FC = ({ children }) => {
     const history = useHistory();
-    const [errorHandler, setErrorHandler]=useState();
+    const [errorHandler, setErrorHandler] = useState();
     const recipeApi = new RecipeService({ history: history, errorHandler: setErrorHandler });
     const [user, setUser] = useState<IUser>(userDefaultValues.user);
     const [loadingRecipes, setLoadingRecipes] = useState<boolean>(true);
@@ -44,23 +46,22 @@ const AppProvider: FC = ({ children }) => {
     useEffect(() => {
         const user = new User({ history: ionRouterContext });
         user.checkToken(setUser);
-        getRecipes();
     }, []);
 
     const setUserAcc = async (user: IUser) => {
-        // recipes
         return setUser(user);
     };
 
     const getRecipes = async () => {
-        const res = await recipeApi.getAllRecipes();
-        if(res && res.status === 200){
-            return setRecipes([...res.data])
+        setRecipesLoading(true);
+        const res = await recipeApi.getAllRecipes(user.isLoggedin);
+        if (res && res.status === 200) {
+            setRecipes([...res.data])
         }
+        return setRecipesLoading(false);
     };
-    const setRecipesLoading = (loading:boolean)=> setLoadingRecipes((l)=> l)
+    const setRecipesLoading = (loading: boolean) => setLoadingRecipes(loading)
     const addRecipe = (recipes: IRecipe) => setRecipes((r) => [...r, recipes]);
-console.log(recipes)
     return (
         <AppContext.Provider
             value={{
@@ -69,7 +70,8 @@ console.log(recipes)
                 recipes,
                 loadingRecipes,
                 setUserAcc,
-                addRecipe
+                addRecipe,
+                getRecipes
             }}
         >
             {children}

@@ -19,8 +19,8 @@ interface LoginProps extends OwnProps, DispatchProps { }
 
 export const Login: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsername: setUsernameAction }) => {
   const { setUserAcc } = useContext(AppContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('Coco2@gmail.com');
+  const [password, setPassword] = useState('Jrnels10!');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [emailError, SetEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -43,9 +43,11 @@ export const Login: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsernam
     }
     if (email && password) {
       const user = new User({ email, password, history, errorHandler: setUserError });
-      await user.signIn();
+      const signin = await user.signIn();
+      if(signin){
+        history.push('/recipes', { direction: 'none' });
+      }
       setUserAcc(user);
-      history.push('/recipes', { direction: 'none' });
     }
   };
 
@@ -94,7 +96,7 @@ export const Login: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsernam
 
             {formSubmitted && passwordError && <IonText color="danger">
               <p className="ion-padding-start">
-              Password must contain at least one uppercase and lowercase letter and one number or special character
+                Password must contain at least one uppercase and lowercase letter and one number or special character
               </p>
             </IonText>}
           </IonList>

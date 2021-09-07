@@ -6,34 +6,49 @@ export class User {
     private _accessToken: string | undefined;
     private password?: string;
     public email: string;
+    public validated: boolean = false;
     public firstName?: string;
     public lastName?: string;
-    public isLoggedin: boolean;
+    public isLoggedin: boolean = false;
     constructor(props: any) {
         this._api = new AuthService({ history: props.history, errorHandler: props.errorHandler })
         this.email = props.email;
         this.firstName = props.firstName;
         this.lastName = props.lastName;
         this.password = props.password;
-        this.isLoggedin = props.isLoggedin ? false : true;
     }
 
-    async signUp() {
-        const res = await this._api.signup(this);
+    async signUp(setUser: any) {
+        if (this.email && this.password) {
+            const res = await this._api.signup(this);
+            if (res.status === 201) {
+                setUser(this);
+                return true
+            }
+        }
+        return false;
     };
+
     async checkToken(setUser: any) {
         const res = await this._api.signInToken();
-        Object.assign(this, res);
-        this.isLoggedin = true;
-        setUser(this);
-        return this;
+        if (res.status === 200) {
+            Object.assign(this, res);
+            this.validated = true;
+            this.isLoggedin = true;
+        } else {
+            this.validated = true;
+        }
+        return setUser(this);
     }
     async signIn() {
-        const res = await this._api.signin({ ...this });
+        await this._api.signin({ ...this });
         this.isLoggedin = true;
+        this.validated = true;
+        return true;
     };
     signOut() {
         this.isLoggedin = false;
         this._api.signout();
+        return this.validated = true;
     }
 };

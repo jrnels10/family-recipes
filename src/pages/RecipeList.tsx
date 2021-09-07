@@ -1,15 +1,20 @@
-import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { useContext, useEffect } from 'react';
+import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonSpinner, IonTitle, IonToolbar } from '@ionic/react';
+import { useContext, useEffect, useState } from 'react';
+import { useLocation, withRouter } from 'react-router';
 import RecipeItem from '../components/RecipeItem';
 import { AppContext } from '../Data/CTX/AppContext';
 import './recipeList.scss';
 
 const RecipeList: React.FC = () => {
-  const { recipes, recipeApi } = useContext(AppContext);
+  const { recipes, loadingRecipes, getRecipes, user } = useContext(AppContext);
+  const { pathname } = useLocation();
   useEffect(() => {
-    // const res= await recipeApi.getAllRecipes();
-    return () => { }
-  }, [])
+    console.log('validated',user.validated)
+    if (user.validated && pathname === '/recipes') {
+      getRecipes();
+    }
+  }, [pathname,user]);
+
   return (
     <IonPage id="recipe-list">
       <IonHeader translucent={true}>
@@ -21,15 +26,24 @@ const RecipeList: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        {loadingRecipes ? <IonSpinner className='spin' name="crescent" /> : null}
         <IonGrid fixed={true}>
           <IonRow style={{ width: '100%' }}>
+            {/* <IonInfiniteScroll
+              onIonInfinite={getRecipes()}
+            >
+              <IonInfiniteScrollContent loading-spinner="bubbles" loading-text="Loading more data...">
+
+              </IonInfiniteScrollContent>
+            </IonInfiniteScroll> */}
             {recipes.map((recipe, i) => (
-              <IonCol size="12" size-md="12" key={recipe.title}>
-                <RecipeItem
-                  key={recipe.title}
-                  recipe={recipe}
-                />
-              </IonCol>
+              // <IonCol size="12" size-md="12" key={recipe.id}>
+              <RecipeItem
+
+                key={recipe.id}
+                recipe={recipe}
+              />
+              // </IonCol>
             ))}
           </IonRow>
         </IonGrid>
@@ -38,7 +52,7 @@ const RecipeList: React.FC = () => {
   );
 };
 
-export default RecipeList;
+export default withRouter(RecipeList);
 
 // import React from 'react';
 // import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react';

@@ -59,6 +59,7 @@ const IonicApp: React.FC = () => (
     <MenuNavigator />
     <IonTabs>
       <IonRouterOutlet>
+        <Route path="/" component={RecipeList} exact/>
         <Route path="/recipes" component={RecipeList} />
         <Route path="/new-recipe" component={NewRecipe} />
         <Route path="/useraccnt" component={UserAccnt} />
