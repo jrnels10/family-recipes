@@ -1,6 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonBackdrop,
   IonHeader,
   IonIcon,
   IonLabel,
@@ -39,11 +40,15 @@ import './theme/variables.css';
 import { MenuNavigator } from './components/Menu';
 import { Login } from './pages/Login'
 // import { AppContextProvider } from './Data/Context';
-import AppProvider from './Data/CTX/AppContext';
+import AppProvider, { AppContext } from './Data/CTX/AppContext';
 import { Signup } from './pages/Signup';
 import RedirectToLogin from './components/RedirectToLogin';
 import NewRecipe from './pages/NewRecipe';
 import UserAccnt from './pages/UserAccnt';
+import { RecipeMain } from './pages/RecipeMain';
+import RecipeCard from './components/RecipeCard';
+import { useContext } from 'react';
+
 
 const App: React.FC = () => {
   return (
@@ -54,13 +59,17 @@ const App: React.FC = () => {
     </IonReactRouter>
   );
 };
-const IonicApp: React.FC = () => (
-  <IonApp>
+const IonicApp: React.FC = () => {
+  const { saving } = useContext(AppContext);
+  return <IonApp>
     <MenuNavigator />
+    {saving ? <IonBackdrop className='save-backdrop'/> : null}
     <IonTabs>
       <IonRouterOutlet>
-        <Route path="/" component={RecipeList} exact/>
-        <Route path="/recipes" component={RecipeList} />
+        {/* <Route path="/" component={RecipeList} exact/> */}
+        <Route path="/recipes" render={() => <RecipeList />} exact={true} />
+        <Route path="/recipe/:id" component={RecipeCard} exact={true} />
+        {/* <Route path="/recipe/:id" exact component={RecipeCard} /> */}
         <Route path="/new-recipe" component={NewRecipe} />
         <Route path="/useraccnt" component={UserAccnt} />
         <Route path="/login" component={Login} />
@@ -85,6 +94,6 @@ const IonicApp: React.FC = () => (
       </IonTabBar>
     </IonTabs>
   </IonApp>
-);
+};
 
 export default App;

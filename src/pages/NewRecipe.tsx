@@ -1,10 +1,10 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { RecipeInput } from './../components/RecipeInput';
-import './Tab2.css';
+import './newRecipe.scss';
 
 const Tab2: React.FC = () => {
   return (
-    <IonPage>
+    <IonPage id='new_recipe'>
         <IonHeader translucent={true}>
           <IonToolbar>
             <IonButtons slot="start">

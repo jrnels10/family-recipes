@@ -34,7 +34,6 @@ interface Pages {
 export const MenuNavigator: React.FC = () => {
     const { user: { isLoggedin } } = useContext(AppContext);
     const location = useLocation();
-    console.log(isLoggedin)
     function renderlistItems(list: Pages[]) {
         return list
             .filter(route => !!route.path )

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {  ISignUser, IUser } from "../CTX/types";
 import BaseHttpService from "./base-http.service";
 
@@ -17,6 +18,7 @@ export default class AuthService extends BaseHttpService{
       }
       async signInToken() {
        return await this.get(`auth/signInToken`);
+      // const res= await axios.get('http://192.168.0.187:5000/');
       }
     
       async signout() {

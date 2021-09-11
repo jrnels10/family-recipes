@@ -8,7 +8,7 @@ interface ILogin {
 }
 
 export default class BaseHttpService {
-    BASE_URL = 'http://localhost:5000';//process.env.REACT_APP_API;
+    BASE_URL = `${isPlatform('ios') ? 'http://192.168.0.187' : 'http://localhost'}:5000`;//process.env.REACT_APP_API;
     _accessToken = null;
     history?: any;
     errorHandler?: any;
@@ -75,7 +75,7 @@ export default class BaseHttpService {
         }
     }
     _handleHttpError(error: any) {
-        debugger
+        // debugger
         const { statusCode } = error.response.data;
         if (statusCode !== 401) {
             throw error;

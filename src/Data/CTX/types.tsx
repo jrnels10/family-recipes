@@ -6,6 +6,11 @@ export interface IRecipeImage {
     blobData?: Blob
 }
 
+export interface ICookTime {
+    time: [number, number];
+    hours: number;
+    minutes: number
+}
 
 export interface IRecipe {
     id?: number,
@@ -13,7 +18,10 @@ export interface IRecipe {
     chef: string,
     privacy: boolean,
     description: string,
-    photos?: IRecipeImage[]
+    photos: IRecipeImage[],
+    cookTime?: string;
+    ingredients?: string;
+    instructions?:string;
 };
 
 
@@ -33,6 +41,7 @@ export interface ISignUser {
 }
 
 export type RecipeContextState = {
+    recipe?: IRecipe;
     recipes: IRecipe[];
     addRecipe: (recipe: IRecipe) => void;
 };
@@ -44,13 +53,17 @@ export type UserContextState = {
 };
 
 export type AppContextState = {
+    saving: boolean;
+    recipe?: IRecipe;
     recipes: IRecipe[];
     addRecipe: (recipe: IRecipe) => void;
     user: IUser;
+    setSaving: any;
     setUserAcc: (user: IUser) => void;
     loadingRecipes: boolean;
-    recipeApi: any,
-    getRecipes: any
+    recipeApi: any;
+    getRecipes: any;
+    getRecipeById: any;
 }
 
 export function combineStates<S extends any>(states: S) {

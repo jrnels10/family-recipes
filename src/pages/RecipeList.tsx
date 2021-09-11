@@ -1,19 +1,25 @@
-import { IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonSpinner, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonSpinner, IonTitle, IonToolbar } from '@ionic/react';
+import { closeCircleOutline, ellipsisVerticalCircle, ellipsisVerticalCircleOutline, ellipsisVerticalOutline, filterCircle, filterCircleOutline } from 'ionicons/icons';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, withRouter } from 'react-router';
+import { Modal } from '../components/Modal';
 import RecipeItem from '../components/RecipeItem';
+import { Searchbar } from '../components/Searchbar';
 import { AppContext } from '../Data/CTX/AppContext';
 import './recipeList.scss';
 
 const RecipeList: React.FC = () => {
   const { recipes, loadingRecipes, getRecipes, user } = useContext(AppContext);
-  const { pathname } = useLocation();
   useEffect(() => {
-    console.log('validated',user.validated)
-    if (user.validated && pathname === '/recipes') {
-      getRecipes();
+    console.log('validated', user.validated)
+    if (user.validated) {
+      getRecipes({});
     }
-  }, [pathname,user]);
+  }, [user]);
+
+  const searchInput = (search: string) => {
+    getRecipes({ search: search.toLocaleLowerCase() });
+  }
 
   return (
     <IonPage id="recipe-list">
@@ -23,27 +29,21 @@ const RecipeList: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <IonTitle>Recipes</IonTitle>
+          <IonButtons slot="end">
+            <Modal />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         {loadingRecipes ? <IonSpinner className='spin' name="crescent" /> : null}
         <IonGrid fixed={true}>
           <IonRow style={{ width: '100%' }}>
-            {/* <IonInfiniteScroll
-              onIonInfinite={getRecipes()}
-            >
-              <IonInfiniteScrollContent loading-spinner="bubbles" loading-text="Loading more data...">
-
-              </IonInfiniteScrollContent>
-            </IonInfiniteScroll> */}
+            <Searchbar placeholder='search recipes' searchInput={searchInput} />
             {recipes.map((recipe, i) => (
-              // <IonCol size="12" size-md="12" key={recipe.id}>
               <RecipeItem
-
                 key={recipe.id}
                 recipe={recipe}
               />
-              // </IonCol>
             ))}
           </IonRow>
         </IonGrid>
