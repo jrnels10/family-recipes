@@ -8,7 +8,7 @@ interface ILogin {
 }
 
 export default class BaseHttpService {
-    BASE_URL = `${isPlatform('ios') ? 'http://192.168.0.187' : 'http://localhost'}:5000`;//process.env.REACT_APP_API;
+    BASE_URL = `http://192.168.0.191:5000`;//process.env.REACT_APP_API;
     _accessToken = null;
     history?: any;
     errorHandler?: any;
@@ -17,7 +17,15 @@ export default class BaseHttpService {
         this.base = isPlatform('ios') ? HTTP : axios;
         this.history = props.history;
         this.errorHandler = props.errorHandler;
+        // this.connectionValidate()
     }
+
+async connectionValidate(){
+    const res = await axios.get('http://192.168.0.191:5000');
+    console.log(res.data)
+    // debugger
+    return res
+}
 
     iosHeaders = () => {
         return {

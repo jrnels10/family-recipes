@@ -64,6 +64,7 @@ export type AppContextState = {
     recipeApi: any;
     getRecipes: any;
     getRecipeById: any;
+    resetRecipe:any
 }
 
 export function combineStates<S extends any>(states: S) {

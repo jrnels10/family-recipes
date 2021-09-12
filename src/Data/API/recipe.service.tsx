@@ -19,30 +19,24 @@ export default class RecipeService extends BaseHttpService {
             return await this.post(`google-upload/${id}`, bodyFormData)
         }
     }
-    async getAllRecipes(user: boolean, search?: string, filter?: any) {
+    async getAllRecipes(user: boolean, search?: string, filters?: any) {
         const queryObj = {};
-
-        // if (status && status.length) {
-        //   queryObj.status = status;
-        // }
-        // if (days && days.length) {
-        //   queryObj.days = days.join(',');
-        // }
-        // if (search && search.length) {
-        //   queryObj.search = search;
-        // }
         if (search && search.length) {
             Object.assign(queryObj, { search })
         }
+        if (filters) {
+            Object.assign(queryObj, { ...filters })
+        }
         const queryStr = queryString.stringify(queryObj);
         console.log(queryStr)
+        
         const res = await this.get(`recipe/getall${user ? 'user' : ''}${queryStr ? `?${queryStr}` : ''}`);
         console.log(res.data)
 
         return res;
     };
 
-    async getRecipeById(id:string){
+    async getRecipeById(id: string) {
         return await this.get(`recipe/${id}`)
     }
 

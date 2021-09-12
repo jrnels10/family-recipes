@@ -46,7 +46,7 @@ import RedirectToLogin from './components/RedirectToLogin';
 import NewRecipe from './pages/NewRecipe';
 import UserAccnt from './pages/UserAccnt';
 import { RecipeMain } from './pages/RecipeMain';
-import RecipeCard from './components/RecipeCard';
+import RecipeCard from './pages/RecipeCard';
 import { useContext } from 'react';
 
 
@@ -63,10 +63,10 @@ const IonicApp: React.FC = () => {
   const { saving } = useContext(AppContext);
   return <IonApp>
     <MenuNavigator />
-    {saving ? <IonBackdrop className='save-backdrop'/> : null}
+    {saving ? <IonBackdrop className='save-backdrop' /> : null}
     <IonTabs>
       <IonRouterOutlet>
-        {/* <Route path="/" component={RecipeList} exact/> */}
+        {/* <IonRouteR from="/" to="/recipes"></ion-route-redirect> */}
         <Route path="/recipes" render={() => <RecipeList />} exact={true} />
         <Route path="/recipe/:id" component={RecipeCard} exact={true} />
         {/* <Route path="/recipe/:id" exact component={RecipeCard} /> */}

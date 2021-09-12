@@ -91,7 +91,7 @@ async function openPicker(this: any, numColumns = 1, numOptions = 5, columnOptio
 
 export const RecipeInput: React.FC = () => {
     const { photos, takePhoto } = usePhotoGallery();
-    const { recipeApi, setSaving, addRecipe } = useContext(AppContext);
+    const { recipeApi, setSaving, addRecipe,resetRecipe } = useContext(AppContext);
     const [description, setDescription] = useState<string>('');
     const [instructions, setInstructions] = useState<string>('');
     const [chef, setChef] = useState<string>();
@@ -149,9 +149,10 @@ export const RecipeInput: React.FC = () => {
         setFormSubmitted(true);
     };
 
-    const submitAction = () => {
-        setFormSubmitted(false)
-        history.push('/recipes')
+    const submitAction = async() => {
+        setFormSubmitted(false);
+        resetRecipe();
+        history.push('/recipe/new')
     };
 
     const changePrivacy = (value: string) => {
@@ -255,3 +256,7 @@ export const RecipeInput: React.FC = () => {
         </IonContent>
     );
 };
+
+function getRecipeById(arg0: { id: string; }) {
+    throw new Error('Function not implemented.');
+}

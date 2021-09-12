@@ -6,7 +6,7 @@ import RecipeService from "../API/recipe.service";
 import { Recipe } from "../Constructors/Recipe";
 import { User } from "../Constructors/User";
 import placeHolderImage from './../../assets/Images/placeholder.jpg';
-import { AppContextState, IRecipe, IUser, RecipeContextState, UserContextState } from "./types";
+import { AppContextState, IRecipe, IRecipeImage, IUser, RecipeContextState, UserContextState } from "./types";
 
 const recipeDefaultValues: RecipeContextState = {
     recipe: undefined,
@@ -31,12 +31,20 @@ export const AppContext = createContext<AppContextState>(
         ...recipeDefaultValues,
         ...userDefaultValues,
         loadingRecipes: true,
-        setSaving:()=>null,
+        setSaving: () => null,
         recipeApi: () => null,
         getRecipes: () => null,
-        getRecipeById: () => null
+        getRecipeById: () => null,
+        resetRecipe: () => null
     }
 );
+
+const setStockPhoto = (photos: IRecipeImage[]) => {
+    photos.push({
+        fileName: 'placeholder',
+        fileUrl: placeHolderImage
+    })
+}
 
 const AppProvider: FC = ({ children }) => {
     const history = useHistory();
@@ -48,7 +56,6 @@ const AppProvider: FC = ({ children }) => {
     const [recipes, setRecipes] = useState<IRecipe[]>(recipeDefaultValues.recipes);
     const [recipe, setRecipe] = useState(recipeDefaultValues.recipe);
     const ionRouterContext = useContext(IonRouterContext);
-    // const recipe = new Recipe({ history: ionRouterContext });
 
     useEffect(() => {
         const user = new User({ history: ionRouterContext });
@@ -59,9 +66,9 @@ const AppProvider: FC = ({ children }) => {
         return setUser(user);
     };
 
-    const getRecipes = async ({ search, filter }: { search?: string | undefined, filter?: any }) => {
+    const getRecipes = async ({ search, filters }: { search?: string | undefined, filters?: any }) => {
         setRecipesLoading(true);
-        const res = await recipeApi.getAllRecipes(user.isLoggedin, search, filter);
+        const res = await recipeApi.getAllRecipes(user.isLoggedin, search, filters);
         if (res && res.status === 200) {
             res.data.map((d: any) => {
                 if (d.photos && !d.photos.length) {
@@ -77,20 +84,24 @@ const AppProvider: FC = ({ children }) => {
     };
     const getRecipeById = async ({ id }: { id: string }) => {
         setRecipesLoading(true);
-        const res = await recipeApi.getRecipeById(id);
-        if (res && res.status === 200) {
-            if (res.data.photos && !res.data.photos.length) {
-                res.data.photos.push({
-                    fileName: 'placeholder',
-                    fileUrl: placeHolderImage
-                })
-            }
-            setRecipe({ ...res.data })
+        if (id && id !== 'new') {
+            setRecipe(recipes.find(r => r.id === parseInt(id))); // grab the recipe from the recipeslist so that the data request doesnt mess up the recipecard animation.
+            // const res = await recipeApi.getRecipeById(id);
+            // if (res && res.status === 200) {
+            //     if (res.data.photos && !res.data.photos.length) {
+            //         setStockPhoto(res.data.photos)
+            //     }
+            //     setRecipe({ ...res.data })
+            // }
+        } else {
+            setStockPhoto(recipes[recipes.length - 1].photos)
+            setRecipe({ ...recipes[recipes.length - 1] }) // grabbing the last recipe because it was loaded from the form, not the database
         }
         return setRecipesLoading(false);
     }
     const setRecipesLoading = (loading: boolean) => setLoadingRecipes(loading)
     const addRecipe = (recipes: IRecipe) => setRecipes((r) => [...r, recipes]);
+    const resetRecipe = () => setRecipe(recipeDefaultValues.recipe)
     return (
         <AppContext.Provider
             value={{
@@ -104,7 +115,8 @@ const AppProvider: FC = ({ children }) => {
                 setUserAcc,
                 addRecipe,
                 getRecipeById,
-                getRecipes
+                getRecipes,
+                resetRecipe
             }}
         >
             {children}

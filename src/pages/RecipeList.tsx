@@ -1,7 +1,8 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonSpinner, IonTitle, IonToolbar } from '@ionic/react';
-import { closeCircleOutline, ellipsisVerticalCircle, ellipsisVerticalCircleOutline, ellipsisVerticalOutline, filterCircle, filterCircleOutline } from 'ionicons/icons';
-import { useContext, useEffect, useState } from 'react';
+import { CreateAnimation, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel, IonMenuButton, IonMenuToggle, IonPage, IonRow, IonSegment, IonSegmentButton, IonSpinner, IonTitle, IonToolbar } from '@ionic/react';
+import { basket, call, closeCircleOutline, code, ellipsisVerticalCircle, ellipsisVerticalCircleOutline, ellipsisVerticalOutline, filterCircle, filterCircleOutline, globe, heart, home, peopleCircleOutline, peopleOutline, pin, star } from 'ionicons/icons';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, withRouter } from 'react-router';
+import { motion, AnimatePresence } from "framer-motion"
 import { Modal } from '../components/Modal';
 import RecipeItem from '../components/RecipeItem';
 import { Searchbar } from '../components/Searchbar';
@@ -10,27 +11,38 @@ import './recipeList.scss';
 
 const RecipeList: React.FC = () => {
   const { recipes, loadingRecipes, getRecipes, user } = useContext(AppContext);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [filters, setFilters] = useState({});
+  const [search, setSearch] = useState('')
   useEffect(() => {
-    console.log('validated', user.validated)
     if (user.validated) {
       getRecipes({});
     }
   }, [user]);
 
-  const searchInput = (search: string) => {
-    getRecipes({ search: search.toLocaleLowerCase() });
+  const searchInput = (searchVal: string) => {
+    setSearch(searchVal)
+    getRecipes({ search: searchVal.toLocaleLowerCase(), filters });
+  };
+
+  const filterInput = (filterProps: IObjectKeys) => {
+    setFilters(filterProps)
+    getRecipes({ search: search.toLocaleLowerCase(), filters: filterProps });
   }
 
   return (
     <IonPage id="recipe-list">
-      <IonHeader translucent={true}>
+      <IonHeader >
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
           <IonTitle>Recipes</IonTitle>
           <IonButtons slot="end">
-            <Modal />
+            {/* <Modal /> */}
+            <IonButton onClick={() => setOpenFilter(!openFilter)}>
+              <IonIcon icon={filterCircleOutline} />
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -38,6 +50,7 @@ const RecipeList: React.FC = () => {
         {loadingRecipes ? <IonSpinner className='spin' name="crescent" /> : null}
         <IonGrid fixed={true}>
           <IonRow style={{ width: '100%' }}>
+            <Filter openFilter={openFilter} setFilters={filterInput} />
             <Searchbar placeholder='search recipes' searchInput={searchInput} />
             {recipes.map((recipe, i) => (
               <RecipeItem
@@ -54,68 +67,74 @@ const RecipeList: React.FC = () => {
 
 export default withRouter(RecipeList);
 
-// import React from 'react';
-// import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react';
-// import SpeakerItem from '../components/SpeakerItem';
-// import { Speaker } from '../models/Speaker';
-// import { Session } from '../models/Schedule';
-// import { connect } from '../data/connect';
-// import * as selectors from '../data/selectors';
-// import './SpeakerList.scss';
 
-// interface OwnProps { };
+interface IObjectKeys {
+  [key: string]: string | number;
+}
 
-// interface StateProps {
-//   speakers: Speaker[];
-//   speakerSessions: { [key: string]: Session[] };
-// };
+interface IDevice extends IObjectKeys {
+  id: number;
+  room_id: number;
+  name: string;
+  type: string;
+  description: string;
+}
 
-// interface DispatchProps { };
 
-// interface SpeakerListProps extends OwnProps, StateProps, DispatchProps { };
+export const Filter = ({ openFilter, setFilters }: { openFilter: boolean, setFilters: any }) => {
+  const [privacy, setPrivacy] = useState('both');
+  const [appliedFilters, setAppliedFilters] = useState({})
 
-// const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) => {
-
-//   return (
-//     <IonPage id="speaker-list">
-//       <IonHeader translucent={true}>
-//         <IonToolbar>
-//           <IonButtons slot="start">
-//             <IonMenuButton />
-//           </IonButtons>
-//           <IonTitle>Speakers</IonTitle>
-//         </IonToolbar>
-//       </IonHeader>
-
-//       <IonContent fullscreen={true}>
-//         <IonHeader collapse="condense">
-//           <IonToolbar>
-//             <IonTitle size="large">Speakers</IonTitle>
-//           </IonToolbar>
-//         </IonHeader>
-
-//           <IonGrid fixed>
-//             <IonRow>
-//               {speakers.map(speaker => (
-//                 <IonCol size="12" size-md="6" key={speaker.id}>
-//                   <SpeakerItem
-//                     key={speaker.id}
-//                     speaker={speaker}
-//                     sessions={speakerSessions[speaker.name]}
-//                   />
-//                 </IonCol>
-//               ))}
-//             </IonRow>
-//           </IonGrid>
-//       </IonContent>
-//     </IonPage>
-//   );
-// };
-
-// export default connect<OwnProps, StateProps, DispatchProps>({
-//   mapStateToProps: (state) => ({
-//     speakers: selectors.getSpeakers(state),
-//     speakerSessions: selectors.getSpeakerSessions(state)
-//   }),
-//   component: React.memo(SpeakerList)
-// });
+  const changeFilter = (value: string, filtertype: string, filterFunction: any) => {
+    filterFunction(value);
+    const filt: IObjectKeys = appliedFilters;
+    if (value === 'both' && filt) {
+      delete filt[filtertype];
+      setAppliedFilters({ ...filt });
+      setFilters({ ...filt });
+    } else {
+      setAppliedFilters({ ...appliedFilters, ...{ [filtertype]: value } });
+      setFilters({ ...appliedFilters, ...{ [filtertype]: value } });
+    }
+  }
+  return <AnimatePresence>
+    {openFilter && (
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: '50px' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ stiffness: 300 }}
+        style={{ height: '50px', width: '100%', margin: '10px 15px' }}
+      >
+        <motion.div
+          initial={{ opacity: 0, display: 'none' }}
+          animate={{ opacity: 1, display: 'block' }}
+          exit={{ opacity: 0, display: 'none' }}
+        >
+          <IonRow>
+            <IonSegment value={privacy} onIonChange={e => changeFilter(e.detail.value!, 'privacy', setPrivacy)} color={privacy === 'both' ? 'medium' : privacy === 'private' ? 'primary' : 'secondary'}>
+              <IonSegmentButton value='private'>
+                <IonIcon icon={peopleCircleOutline} color='secondary' />
+                <IonLabel color='secondary'>
+                  Private
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value='both' >
+                <IonIcon icon={code} color='medium' />
+                <IonLabel color='medium'>
+                  Both
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value='public' >
+                <IonIcon icon={peopleOutline} color='primary' />
+                <IonLabel color='primary'>
+                  Public
+                </IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonRow>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+};

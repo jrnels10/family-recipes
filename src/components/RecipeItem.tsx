@@ -35,7 +35,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ recipe }) => {
               <h2>{recipe.title}</h2>
               <p>by {recipe.chef}</p>
             </IonLabel>
-            <IonIcon color={recipe.privacy ? 'tertiary' : 'medium'} icon={recipe.privacy ? peopleCircleOutline : peopleOutline} />
+            <IonIcon color={recipe.privacy ? 'secondary' : 'success'} icon={recipe.privacy ? peopleCircleOutline : peopleOutline} />
           </IonItem>
         </IonCardHeader>
 
