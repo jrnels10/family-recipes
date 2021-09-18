@@ -86,13 +86,6 @@ const AppProvider: FC = ({ children }) => {
         setRecipesLoading(true);
         if (id && id !== 'new') {
             setRecipe(recipes.find(r => r.id === parseInt(id))); // grab the recipe from the recipeslist so that the data request doesnt mess up the recipecard animation.
-            // const res = await recipeApi.getRecipeById(id);
-            // if (res && res.status === 200) {
-            //     if (res.data.photos && !res.data.photos.length) {
-            //         setStockPhoto(res.data.photos)
-            //     }
-            //     setRecipe({ ...res.data })
-            // }
         } else {
             setStockPhoto(recipes[recipes.length - 1].photos)
             setRecipe({ ...recipes[recipes.length - 1] }) // grabbing the last recipe because it was loaded from the form, not the database

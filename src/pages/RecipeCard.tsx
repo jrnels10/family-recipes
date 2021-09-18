@@ -10,13 +10,17 @@ type Props = {
             id: string
         }
     };
+    from: string
+
+
 };
 
 const RecipeCard: React.FC<Props> = (props) => {
     const { getRecipeById, recipe, resetRecipe } = useContext(AppContext)
     const { id } = props.match.params;
     let queryRecipe: NodeJS.Timeout
-    const history = useHistory();
+    const history = useHistory<Props>();
+    console.log(history)
     useEffect(() => {
         //     history.listen((location, action)=>{
         //         console.log(location,action)
@@ -37,7 +41,7 @@ const RecipeCard: React.FC<Props> = (props) => {
         <IonHeader translucent={true} className="ion-no-border" >
             <IonToolbar >
                 <IonButtons slot="start">
-                    <IonBackButton defaultHref='/recipes' />
+                    {history.location.state && history.location.state.from === '/new-recipe' ? <IonMenuButton /> : <IonBackButton defaultHref='/recipes' />}
                 </IonButtons>
                 <IonTitle>{recipe?.title}</IonTitle>
                 <IonButtons slot="end">

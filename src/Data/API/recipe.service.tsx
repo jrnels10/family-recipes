@@ -40,6 +40,10 @@ export default class RecipeService extends BaseHttpService {
         return await this.get(`recipe/${id}`)
     }
 
+    async getChefs(){
+        return await this.get('recipe/getchefs')
+    }
+
     async createNewRecipe(recipe: IRecipe) {
         return await this.post('recipe', recipe)
     }
