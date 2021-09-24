@@ -8,8 +8,8 @@
     }
     .recipe_card-main-image-info--cookTime {
         position: absolute;
-        bottom: 5px;
-        left: 5px;
+        bottom: 15px;
+        right: 15px;
         background: rgba(var(--ion-color-base-rgb), .80);
         box-shadow: rgba(0, 0, 0, 0.40) 0px 4px 16px;
     }
@@ -19,4 +19,21 @@
     .toolbar-title-default {
         --opacity: 1;
     }
+}
+
+
+.recipe_card-main-image--edit{
+    filter: grayscale(1);
+    &::part(image){
+        opacity: .5;
+    }
+}
+.new_recipe-picture{
+    border-radius:50%;
+    box-shadow: rgba(0, 0, 0, 0.40) 0px 0px 20px;
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
 }

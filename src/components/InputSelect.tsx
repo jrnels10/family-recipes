@@ -46,7 +46,7 @@ export const InputSelect = ({ value = '', label = '', options = [], loading = fa
                 dropdown ? <IonList className='ion-no-padding chef__select__menu-list'>
                     {
                         options.filter(o => o.toLowerCase().includes(value.toLowerCase())).map((f) => (
-                            <IonItem className='ion-no-padding chef__select__menu-item' onClick={() => dropdownSelect(f)}>
+                            <IonItem key={f} className='ion-no-padding chef__select__menu-item' onClick={() => dropdownSelect(f)}>
                                 <IonNote>{f}</IonNote><br />
                             </IonItem>))
                     }

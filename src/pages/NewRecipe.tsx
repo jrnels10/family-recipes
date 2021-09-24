@@ -2,7 +2,7 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Io
 import { RecipeInput } from './../components/RecipeInput';
 import './newRecipe.scss';
 
-const Tab2: React.FC = () => {
+export const NewRecipe: React.FC = () => {
   return (
     <IonPage id='new_recipe'>
         <IonHeader translucent={true}>
@@ -20,4 +20,3 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;

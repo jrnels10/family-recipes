@@ -8,7 +8,7 @@ interface ILogin {
 }
 
 export default class BaseHttpService {
-    BASE_URL = `http://localhost:5000`;//process.env.REACT_APP_API;
+    BASE_URL = `http://192.168.0.195:5000`;//process.env.REACT_APP_API;
     _accessToken = null;
     history?: any;
     errorHandler?: any;
@@ -97,7 +97,7 @@ async connectionValidate(){
     }
 
     _handle401() {
-        this.history.push('/login');
+        // this.history.push('/login');
     }
 
     _getCommonOptions() {

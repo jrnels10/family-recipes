@@ -3,7 +3,7 @@ import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, I
 import { Route, Redirect } from 'react-router';
 import { calendar, location, informationCircle, people, add, documentTextOutline, person } from 'ionicons/icons';
 import RecipeList from './RecipeList';
-import RecipeCard from './RecipeCard';
+import RecipeCard from './RecipePage';
 
 interface MainTabsProps { }
 

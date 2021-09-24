@@ -32,7 +32,7 @@ export class User {
     async checkToken(setUser: any) {
         const res = await this._api.signInToken();
         if (res.status === 200) {
-            Object.assign(this, res);
+            Object.assign(this, res.data);
             this.validated = true;
             this.isLoggedin = true;
         } else {
@@ -42,6 +42,7 @@ export class User {
     }
     async signIn() {
         await this._api.signin({ ...this });
+        this.password=undefined;
         this.isLoggedin = true;
         this.validated = true;
         return true;

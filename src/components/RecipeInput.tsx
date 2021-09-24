@@ -91,7 +91,7 @@ async function openPicker(this: any, numColumns = 1, numOptions = 5, columnOptio
 
 export const RecipeInput: React.FC = () => {
     const { photos, takePhoto, setPhotos } = usePhotoGallery();
-    const { recipeApi, setSaving, addRecipe, resetRecipe } = useContext(AppContext);
+    const { recipeApi, setSaving, user, addRecipe, resetRecipe } = useContext(AppContext);
     const [description, setDescription] = useState<string>('');
     const [instructions, setInstructions] = useState<string>('');
     const [chef, setChef] = useState<string>('');
@@ -130,7 +130,8 @@ export const RecipeInput: React.FC = () => {
                 photos,
                 cookTime: `${cookTime[0]}\n${cookTime[1]}`,
                 ingredients: ingredients.join('\n'),
-                instructions
+                instructions,
+                userId: -1
             };
             const res = await recipeApi.createNewRecipe(recipe);
             if (res.status === 201 && recipe.photos.length) {
@@ -229,7 +230,7 @@ export const RecipeInput: React.FC = () => {
                             <IonLabel position="floating">Title</IonLabel>
                             <IonInput disabled={loading} value={title} placeholder="Name of recipe" onIonChange={e => setTitle(e.detail.value!)} clearInput></IonInput>
                         </IonItem>
-                        <InputSelect label='Chef' value={chef} setValue={setChef} options={chefList}/>
+                        <InputSelect label='Chef' value={chef} setValue={setChef} options={chefList} />
                         {/* <IonItem className='ion-no-padding'>
                             <IonLabel position="floating">Chef</IonLabel>
                             <IonInput disabled={loading} value={chef} placeholder="Name of recipe" onIonChange={e => setChef(e.detail.value!)} clearInput></IonInput>

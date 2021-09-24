@@ -21,7 +21,8 @@ export interface IRecipe {
     photos: IRecipeImage[],
     cookTime?: string;
     ingredients?: string;
-    instructions?:string;
+    instructions?: string;
+    userId: number
 };
 
 
@@ -56,6 +57,7 @@ export type AppContextState = {
     saving: boolean;
     recipe?: IRecipe;
     recipes: IRecipe[];
+    recipeUpdates?:IRecipe;
     addRecipe: (recipe: IRecipe) => void;
     user: IUser;
     setSaving: any;
@@ -64,7 +66,9 @@ export type AppContextState = {
     recipeApi: any;
     getRecipes: any;
     getRecipeById: any;
-    resetRecipe:any
+    updateRecipe: any;
+    saveUpdate: any;
+    resetRecipe: any
 }
 
 export function combineStates<S extends any>(states: S) {

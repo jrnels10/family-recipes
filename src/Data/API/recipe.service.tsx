@@ -29,18 +29,23 @@ export default class RecipeService extends BaseHttpService {
         }
         const queryStr = queryString.stringify(queryObj);
         console.log(queryStr)
-        
+
         const res = await this.get(`recipe/getall${user ? 'user' : ''}${queryStr ? `?${queryStr}` : ''}`);
         console.log(res.data)
 
         return res;
     };
 
+    async updateRecipeInfo(recipe: IRecipe) {
+        const res = await this.patch(`recipe/updateRecipeInfo/${recipe.id}`, recipe);
+        return res
+    }
+
     async getRecipeById(id: string) {
         return await this.get(`recipe/${id}`)
     }
 
-    async getChefs(){
+    async getChefs() {
         return await this.get('recipe/getchefs')
     }
 

@@ -16,7 +16,6 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { add, documentTextOutline, ellipse, person, square, triangle } from 'ionicons/icons';
 import RecipeList from './pages/RecipeList';
-import Tab2 from './pages/NewRecipe';
 import Tab3 from './pages/UserAccnt';
 
 /* Core CSS required for Ionic components to work properly */
@@ -43,10 +42,10 @@ import { Login } from './pages/Login'
 import AppProvider, { AppContext } from './Data/CTX/AppContext';
 import { Signup } from './pages/Signup';
 import RedirectToLogin from './components/RedirectToLogin';
-import NewRecipe from './pages/NewRecipe';
+import {NewRecipe} from './pages/NewRecipe';
 import UserAccnt from './pages/UserAccnt';
 import { RecipeMain } from './pages/RecipeMain';
-import RecipeCard from './pages/RecipeCard';
+import RecipePage from './pages/RecipePage';
 import { useContext } from 'react';
 
 
@@ -68,7 +67,7 @@ const IonicApp: React.FC = () => {
       <IonRouterOutlet>
         {/* <IonRouteR from="/" to="/recipes"></ion-route-redirect> */}
         <Route path="/recipes" render={() => <RecipeList />} exact={true} />
-        <Route path="/recipe/:id" component={RecipeCard} exact={true} />
+        <Route path="/recipe/:id" component={RecipePage} exact={true} />
         {/* <Route path="/recipe/:id" exact component={RecipeCard} /> */}
         <Route path="/new-recipe" component={NewRecipe} />
         <Route path="/useraccnt" component={UserAccnt} />
