@@ -1,118 +1,118 @@
-import React, { useState } from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText } from '@ionic/react';
-import './Login.scss'
-import { IUser } from './../Data/CTX/types'
-// import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
-import { RouteComponentProps, useHistory } from 'react-router';
-import { useContext } from 'react';
-import { AppContext } from '../Data/CTX/AppContext';
-import { User } from '../Data/Constructors/User';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonTitle,
+  IonContent,
+  IonLoading,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonButton,
+} from "@ionic/react";
+import React, { useContext, useRef, useState } from "react";
 
-interface OwnProps extends RouteComponentProps { }
+import { AppContext } from "../context/Context";
 
-interface DispatchProps {
-  setIsLoggedIn: boolean;
-  setUsername: IUser;
-}
+import { login } from "../Auth";
+import urls from "../urls";
 
-interface LoginProps extends OwnProps, DispatchProps { }
+import "./Form.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export const Login: React.FC<LoginProps> = ({ setIsLoggedIn, history, setUsername: setUsernameAction }) => {
-  const { setUserAcc } = useContext(AppContext);
-  const [email, setEmail] = useState('Coco2@gmail.com');
-  const [password, setPassword] = useState('Jrnels10!');
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [emailError, SetEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [userError, setUserError] = useState(false);
+const LoginButton = () => {
+  const { loginWithRedirect } = useAuth0();
 
-  const login = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormSubmitted(true);
-    const pattern = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
-    );
-    if (!email) {
-      SetEmailError(true);
-    }
-    if (!password || !pattern.test(password)) {
-      setPasswordError(true);
-    };
-    if (!email || !password || !pattern.test(password)) {
-      return;
-    }
-    if (email && password) {
-      const user = new User({ email, password, history, errorHandler: setUserError });
-      const signin = await user.signIn();
-      if(signin){
-        history.push('/recipes', { direction: 'none' });
-      }
-      setUserAcc(user);
-    }
-  };
+  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+};
+
+const LogoutButton = () => {
+  const { logout } = useAuth0();
 
   return (
-    <IonPage id="login-page">
+    <button onClick={() => logout({ returnTo: window.location.origin })}>
+      Log Out
+    </button>
+  );
+};
+
+export const Login = ({ history }: any) => {
+  const { dispatch } = useContext(AppContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formErrors, setFormErrors] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+
+  const formRef = useRef(null);
+
+  const goTo = (path: any) => {
+    history.push(path, { direction: "forward" });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      setShowLoading(true);
+
+      const user = await login(email, password);
+
+      //   dispatch(loggedIn(user));
+
+      history.replace(urls.APP_HOME);
+
+      setShowLoading(false);
+    } catch (e) {
+      console.error(e);
+      setShowLoading(false);
+      setFormErrors(e);
+    }
+  };
+  return (
+    <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="light">
           <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
+            <IonBackButton defaultHref={`/`} />
           </IonButtons>
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-
-        <div className="login-logo">
-          Family Recipes
-          {/* <img src="assets/img/appicon.svg" alt="Ionic logo" /> */}
-        </div>
-
-        <form noValidate onSubmit={login}>
+      <IonContent className="form">
+        <IonLoading
+          isOpen={showLoading}
+          message="Logging in..."
+          onDidDismiss={() => setShowLoading(false)}
+        />
+        <form onSubmit={handleSubmit} method="post" ref={formRef} action="">
           <IonList>
-            {formSubmitted && userError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Email and/or Password are incorrect
-              </p>
-            </IonText>}
             <IonItem>
-              <IonLabel position="stacked" color="primary">Email</IonLabel>
-              <IonInput name="email" type="text" value={email} spellCheck={false} autocapitalize="off" onIonChange={e => setEmail(e.detail.value!)}
-                required>
-              </IonInput>
+              <IonLabel position={"fixed"}>Email</IonLabel>
+              <IonInput
+                type="email"
+                value={email}
+                onInput={(e: any) => setEmail(e.currentTarget.value)}
+              />
             </IonItem>
-
-            {formSubmitted && emailError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Email is required
-              </p>
-            </IonText>}
-
             <IonItem>
-              <IonLabel position="stacked" color="primary">Password</IonLabel>
-              <IonInput name="password" type="password" value={password} onIonChange={e => setPassword(e.detail.value!)}>
-              </IonInput>
+              <IonLabel position={"fixed"}>Password</IonLabel>
+              <IonInput
+                type="password"
+                value={password}
+                onInput={(e: any) => setPassword(e.currentTarget.value)}
+              />
             </IonItem>
-
-            {formSubmitted && passwordError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Password must contain at least one uppercase and lowercase letter and one number or special character
-              </p>
-            </IonText>}
+            <IonButton expand="block" type="submit">
+              <LoginButton />
+            </IonButton>
           </IonList>
-
-          <IonRow>
-            <IonCol>
-              <IonButton type="submit" expand="block">Login</IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
-            </IonCol>
-          </IonRow>
         </form>
-
+        <LogoutButton />
       </IonContent>
-
     </IonPage>
   );
 };
