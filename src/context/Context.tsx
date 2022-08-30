@@ -80,7 +80,7 @@ const AppContextProvider = ({ children }: any) => {
   };
 
   const setFavoriteRecipe = async (recipe: IRecipe) => {
-    const favRecipe = await recipeService.favoriteRecipe(recipe);
+    const favRecipe = await recipeService.favoriteRecipe(2);
     if (favRecipe) {
       dispatch(setFavorite(favRecipe));
     }

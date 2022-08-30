@@ -26,8 +26,8 @@ export class RecipeService extends BaseHttpService {
     debugger
   }
 
-  async favoriteRecipe(recipe: IRecipe) {
-   const res:any= await this.post(`${this.BASE_URL}/favorite`, recipe)
+  async favoriteRecipe(id: number) {
+   const res:any= await this.post(`${this.BASE_URL}/favorite`, {id})
     if (res) {
       return res as IRecipe;
    }
