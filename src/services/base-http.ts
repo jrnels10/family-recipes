@@ -63,7 +63,6 @@ export default class BaseHttpService {
 
   async _getCommonOptions() {
     const token = await this.getToken();
-console.log(token)
     return {
       cancelToken: this.cancelTokenSource.token,
       headers: {

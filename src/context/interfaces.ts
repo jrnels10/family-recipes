@@ -2,10 +2,11 @@ import { CreateRecipe } from "../interfaces/CreateRecipe";
 import { RecipeService } from "../services/recipe-api";
 
 export interface IRecipe {
+    id: number;
     popular: boolean;
     title: string;
     created: moment.Moment;
-    img: string;
+    image: string;
 }
 
 

@@ -14,6 +14,8 @@ import {
   IonCol,
   IonItem,
   IonThumbnail,
+  IonCard,
+  IonIcon,
 } from "@ionic/react";
 import { useContext, useEffect } from "react";
 import { AppContext, setViewer } from "../context/Context";
@@ -25,11 +27,13 @@ export const Home = () => {
   const { isAuthenticated, getIdTokenClaims, user } = useAuth0();
   const { state, dispatch, getPopularRecipes } = useContext(AppContext);
   const popularRecipes = state.recipes.filter((recipe) => recipe.popular);
-  const recentRecipes = state.recipes.filter((recipe) => {
-    return moment(recipe.created).isAfter(moment().subtract(30, "days"));
-  });
+  const recentRecipes = state.recipes
+    .filter((recipe) => {
+      return moment(recipe.created).isAfter(moment().subtract(30, "days"));
+    })
+    .sort((a, b) => moment(b.created).diff(moment(a.created)));
   useEffect(() => getPopularRecipes(), []);
-
+  console.log(state.recipes);
   return (
     <IonPage>
       <IonHeader>
@@ -44,12 +48,18 @@ export const Home = () => {
           </IonListHeader>
           {popularRecipes.map((recipe) => (
             <IonItem
-              key={recipe.title}
+              key={recipe.id}
               onClick={() => dispatch(setViewer(recipe))}
               button
             >
               <IonThumbnail slot="start">
-                <img src={recipe.img} alt="popular recipe" />
+                {recipe.image ? (
+                  <img src={img(recipe.image)} alt="popular recipe" />
+                ) : (
+                  <IonCard>
+                    <IonIcon icon="pizza" />
+                  </IonCard>
+                )}
               </IonThumbnail>
               <IonLabel>
                 <h2>{recipe.title}</h2>
@@ -69,9 +79,9 @@ export const Home = () => {
                   size="6"
                   className="new-track"
                   key={recipe.title}
-                  onClick={() => console.log(recipe)}
+                  onClick={() => dispatch(setViewer(recipe))}
                 >
-                  <BoxedImage image={recipe.img} alt="recipe recipe" />
+                  <BoxedImage image={img(recipe.image)} alt="recipe recipe" />
                   <IonItem lines="none">
                     <IonLabel>
                       <h3>{recipe.title}</h3>

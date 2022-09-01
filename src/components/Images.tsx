@@ -1,9 +1,10 @@
 import { IonCard, IonIcon, IonImg } from "@ionic/react";
-import { camera } from "ionicons/icons";
+import { camera, pizza } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { IUserPhoto } from "./../interfaces/UserPhoto";
-import { useLongPress, usePhotoGallery } from "./Utils";
+import { useLongPress } from "./Utils";
 import "./images.css";
+import { usePhotoGallery } from "../Utils/Camera";
 
 export const BoxedImage = ({ image, alt }: { image: string; alt: string }) => {
   const imageStyle: any = {
@@ -11,7 +12,23 @@ export const BoxedImage = ({ image, alt }: { image: string; alt: string }) => {
     height: "150px",
     width: "100%",
   };
-  return <img src={image} alt={alt} style={imageStyle} />;
+  return (
+    <IonCard
+      style={{
+        ...imageStyle,
+        margin: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {image ? (
+        <IonImg src={image} alt={alt} style={imageStyle} />
+      ) : (
+        <IonIcon icon={pizza} size="large" />
+      )}
+    </IonCard>
+  );
 };
 
 export const CameraCard = ({

@@ -1,6 +1,7 @@
 import moment from "moment";
 import { IRecipe } from "../context/interfaces";
 import { CreateRecipe } from "../interfaces/CreateRecipe";
+import { savePicture } from "../Utils/Camera";
 import BaseHttpService from "./base-http";
 
 export class RecipeService extends BaseHttpService {
@@ -13,25 +14,44 @@ export class RecipeService extends BaseHttpService {
     return this.post(`${this.BASE_URL}/`, user)
   }
 
-  getRecipes(text?:string) {
+  async getRecipes(text?:string) {
     if (text) {
-      return sampleRecipes.filter(recipe => recipe.title.includes(text))
+      
+      // return sampleRecipes.filter(recipe => recipe.title.includes(text))
     }
-  return sampleRecipes
+  const allRecipes:any= await this.get(`${this.BASE_URL}/recipes`)
+    return allRecipes.data;
   }
 
-  async createRecipe(recipe: CreateRecipe) {
-    const res = await this.post(`${this.BASE_URL}/recipes`,recipe)
-    console.log(res)
-    debugger
+  async createRecipe(recipe: CreateRecipe,image?:any) {
+
+    const formData = await createImageForm(recipe, image);
+    return await this.post(`${this.BASE_URL}/recipes`,formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }})
   }
 
   async favoriteRecipe(id: number) {
+    console.log(id)
    const res:any= await this.post(`${this.BASE_URL}/favorite`, {id})
     if (res) {
       return res as IRecipe;
    }
   }
+}
+
+async function createImageForm(recipe: CreateRecipe,image?:any) {
+  const response = await fetch(image.webviewPath);
+  const blob = await response.blob();
+  const formData = new FormData();
+  formData.append('image', blob, image.filepath);
+  for (const property in recipe) {
+    if (property) {
+      formData.append(`${property}`,recipe[property] as string)
+    }
+  }
+  return formData
 }
   
 const sampleRecipes = [

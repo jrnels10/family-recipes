@@ -31,7 +31,7 @@ const Search = () => {
         return;
       }
       const recipes = await recipeService.getRecipes(q);
-      setSearchedRecipes(recipes);
+      // setSearchedRecipes(recipes);
     },
     [searchedRecipes]
   );
@@ -64,7 +64,7 @@ const Search = () => {
             button
           >
             <IonThumbnail slot="start">
-              <img src={recipe.img} alt="searched recipe" />
+              <img src={img(recipe.image)} alt="searched recipe" />
             </IonThumbnail>
             <IonLabel>
               <h2>{recipe.title}</h2>

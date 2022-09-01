@@ -1,6 +1,7 @@
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { useCallback, useRef, useState } from "react";
 import { IUserPhoto } from "../interfaces/UserPhoto";
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 function preventDefault(e: Event) {
   if (!isTouchEvent(e)) return;
@@ -81,7 +82,7 @@ export function useLongPress<T>(
 
 
 export function usePhotoGallery() {
-  const [photos, setPhotos] = useState<IUserPhoto[]>([]);
+  const [photos, setPhotos] = useState<any[]>([]);
   const takePhoto = async () => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
@@ -104,3 +105,4 @@ export function usePhotoGallery() {
     takePhoto,
   };
 }
+

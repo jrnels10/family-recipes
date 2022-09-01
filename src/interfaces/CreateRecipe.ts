@@ -4,6 +4,7 @@ export interface CreateRecipe {
     title: string;
     ingredientList: string[];
     duration: string;
-    image?: IUserPhoto;
-    description?:string
+    image?: any;
+    description?: string;
+    [key: string]: number |string|undefined|string[]
 }

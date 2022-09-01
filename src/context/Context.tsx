@@ -64,23 +64,24 @@ const AppContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, fullInitialState);
   const recipeService = new RecipeService({ auth0 });
   const { user } = auth0;
-  const getPopularRecipes = () => {
-    const recipes = recipeService.getRecipes();
+  const getPopularRecipes = async () => {
+    const recipes = await recipeService.getRecipes();
     dispatch(setRecipesList(recipes));
   };
 
   const createRecipe = async (recipe: CreateRecipe) => {
-    const newRecipe = await recipeService.createRecipe(recipe);
+    const newRecipe = await recipeService.createRecipe(recipe, recipe.image);
     debugger;
   };
 
   const getSearchedRecipes = async (text: string) => {
     const recipes = await searchRecipes(recipeService, text);
-    dispatch(setSearchedRecipes(recipes));
+    // dispatch(setSearchedRecipes(recipes));
+    return [];
   };
 
   const setFavoriteRecipe = async (recipe: IRecipe) => {
-    const favRecipe = await recipeService.favoriteRecipe(2);
+    const favRecipe = await recipeService.favoriteRecipe(recipe.id);
     if (favRecipe) {
       dispatch(setFavorite(favRecipe));
     }

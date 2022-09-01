@@ -36,11 +36,11 @@ import "./Form.css";
 export const Create = () => {
   const { createRecipe } = useContext(AppContext);
   const [image, setImage] = useState<any>(null);
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const [title, setTitle] = useState<string>("Dog Food");
+  const [text, setText] = useState<string>("This is dog food");
   const [ingredient, setIngredient] = useState<string | null>(null);
-  const [ingredientList, setIngredientList] = useState<string[]>([]);
-  const [duration, setDuration] = useState<string | null>(null);
+  const [ingredientList, setIngredientList] = useState<string[]>(["cheese"]);
+  const [duration, setDuration] = useState<string | null>("0,1");
   const ingredientRef: any = useRef();
 
   const addIngredientToList = () => {
@@ -69,6 +69,7 @@ export const Create = () => {
         title,
         ingredientList,
         duration,
+        image,
       };
       createRecipe(recipe);
     }

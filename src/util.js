@@ -1,6 +1,14 @@
 export const sleep = (n) => new Promise(r => setTimeout(r, n));
 
-export const img = (path) => `https://ionic-react-demos.s3.amazonaws.com/${path}`;
+export const img = (path) => {
+  if (path) {
+    
+   return `http://localhost:8000/images/${path}`;
+  }
+return ''
+}
+
+
 
 export const msToTime = (d) => {
   var seconds = Math.floor((d / 1000) % 60),

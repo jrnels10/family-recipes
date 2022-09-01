@@ -48,7 +48,7 @@ export const Viewer = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="track-content">
-          <img src={viewRecipe.img} alt="currently viewed recipe" />
+          <img src={img(viewRecipe.image)} alt="currently viewed recipe" />
           <h2>{viewRecipe.title}</h2>
         </IonContent>
       </IonModal>
