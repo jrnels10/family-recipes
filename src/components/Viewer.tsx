@@ -10,25 +10,28 @@ import {
 } from "@ionic/react";
 import { arrowDown, heart, heartOutline } from "ionicons/icons";
 import { useContext, useState } from "react";
+import { useHistory } from "react-router";
 import { AppContext, setViewer } from "../context/Context";
+import { IRecipe } from "../context/interfaces";
 import { img } from "../util";
 
 export const Viewer = () => {
   const {
     dispatch,
     setFavoriteRecipe,
-    state: { viewRecipe },
+    state: { viewRecipe = {} as IRecipe },
   } = useContext(AppContext);
-
+  const history = useHistory();
   const handleClose = () => {
     dispatch(setViewer(null));
+    history.goBack();
     return;
   };
 
   const heartIcon = heartOutline;
   if (viewRecipe) {
     return (
-      <IonModal isOpen={true} onDidDismiss={handleClose}>
+      <IonModal isOpen={true}>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">

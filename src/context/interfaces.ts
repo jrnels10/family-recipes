@@ -13,11 +13,14 @@ export interface IRecipe {
 export interface IContext {
     state: {
         recipes: IRecipe[],
+  popularRecipes: IRecipe[],
         viewRecipe:IRecipe|null
     };
     recipeService: RecipeService;
     dispatch: React.Dispatch<any>;
+    getRecipes: () => void;
     createRecipe: (recipe: CreateRecipe) => any;
     getPopularRecipes: () => void;
-    setFavoriteRecipe:(recipe: IRecipe) => any;
+    setFavoriteRecipe: (recipe: IRecipe) => any;
+    setViewerRecipe:(recipe: IRecipe) => void;
 }

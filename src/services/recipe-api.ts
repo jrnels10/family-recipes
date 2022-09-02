@@ -14,6 +14,11 @@ export class RecipeService extends BaseHttpService {
     return this.post(`${this.BASE_URL}/`, user)
   }
 
+  async getPopularRecipes(){
+    const popularRecipes:any =  await this.get(`${this.BASE_URL}/recipes/popular`)
+    return popularRecipes.data;
+  }
+
   async getRecipes(text?:string) {
     if (text) {
       
@@ -33,7 +38,6 @@ export class RecipeService extends BaseHttpService {
   }
 
   async favoriteRecipe(id: number) {
-    console.log(id)
    const res:any= await this.post(`${this.BASE_URL}/favorite`, {id})
     if (res) {
       return res as IRecipe;

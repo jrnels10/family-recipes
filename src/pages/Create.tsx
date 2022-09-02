@@ -5,28 +5,16 @@ import {
   IonTitle,
   IonContent,
   IonButton,
-  IonCol,
-  IonGrid,
-  IonImg,
-  IonRow,
-  IonCard,
-  IonSkeletonText,
-  IonThumbnail,
   IonIcon,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonItemGroup,
   IonLabel,
-  IonList,
-  IonItemOption,
-  IonItemOptions,
-  IonItemSliding,
   IonTextarea,
   IonFooter,
 } from "@ionic/react";
 import { add } from "ionicons/icons";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 import { Duration } from "../components/Duration";
 import { EditList } from "../components/EditList";
 import { CameraCard } from "../components/Images";
@@ -36,11 +24,13 @@ import "./Form.css";
 export const Create = () => {
   const { createRecipe } = useContext(AppContext);
   const [image, setImage] = useState<any>(null);
-  const [title, setTitle] = useState<string>("Dog Food");
-  const [text, setText] = useState<string>("This is dog food");
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>(
+    "This is a decription about the recipe."
+  );
   const [ingredient, setIngredient] = useState<string | null>(null);
   const [ingredientList, setIngredientList] = useState<string[]>(["cheese"]);
-  const [duration, setDuration] = useState<string | null>("0,1");
+  const [duration, setDuration] = useState<string | null>("0,10");
   const ingredientRef: any = useRef();
 
   const addIngredientToList = () => {

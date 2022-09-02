@@ -26,9 +26,9 @@ export const App = () => {
       audience={process.env.REACT_APP_AUTH0_AUDIENCE}
       scope="read:current_user update:current_user_metadata"
     >
-      <AppContextProvider>
-        <IonApp>
-          <IonReactRouter>
+      <IonApp>
+        <IonReactRouter>
+          <AppContextProvider>
             <IonPage>
               <IonRouterOutlet>
                 <Route path={urls.LOGIN} component={Login} exact={true} />
@@ -41,9 +41,9 @@ export const App = () => {
               <Route path="/app" component={Tabs} />
               <Viewer />
             </IonPage>
-          </IonReactRouter>
-        </IonApp>
-      </AppContextProvider>
+          </AppContextProvider>
+        </IonReactRouter>
+      </IonApp>
     </Auth0Provider>
   );
 };

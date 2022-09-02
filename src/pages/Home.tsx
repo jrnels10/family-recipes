@@ -25,15 +25,18 @@ import { BoxedImage } from "../components/Images";
 
 export const Home = () => {
   const { isAuthenticated, getIdTokenClaims, user } = useAuth0();
-  const { state, dispatch, getPopularRecipes } = useContext(AppContext);
-  const popularRecipes = state.recipes.filter((recipe) => recipe.popular);
+  const { state, dispatch, getPopularRecipes, getRecipes, setViewerRecipe } =
+    useContext(AppContext);
+  const popularRecipes = state.popularRecipes;
   const recentRecipes = state.recipes
     .filter((recipe) => {
       return moment(recipe.created).isAfter(moment().subtract(30, "days"));
     })
     .sort((a, b) => moment(b.created).diff(moment(a.created)));
-  useEffect(() => getPopularRecipes(), []);
-  console.log(state.recipes);
+  useEffect(() => {
+    getPopularRecipes();
+    getRecipes();
+  }, []);
   return (
     <IonPage>
       <IonHeader>
@@ -49,7 +52,7 @@ export const Home = () => {
           {popularRecipes.map((recipe) => (
             <IonItem
               key={recipe.id}
-              onClick={() => dispatch(setViewer(recipe))}
+              onClick={() => setViewerRecipe(recipe)}
               button
             >
               <IonThumbnail slot="start">
@@ -79,7 +82,7 @@ export const Home = () => {
                   size="6"
                   className="new-track"
                   key={recipe.title}
-                  onClick={() => dispatch(setViewer(recipe))}
+                  onClick={() => setViewerRecipe(recipe)}
                 >
                   <BoxedImage image={img(recipe.image)} alt="recipe recipe" />
                   <IonItem lines="none">

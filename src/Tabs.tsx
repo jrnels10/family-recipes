@@ -30,15 +30,6 @@ import Search from "./pages/Search";
 import { Create } from "./pages/Create";
 import You from "./pages/You";
 
-// import Music  from './pages/Home';
-// import Search from './pages/Search';
-// import You    from './pages/You';
-// import Track  from './pages/Track';
-// import Readme from './pages/Readme';
-
-// import TabBarSticky from './components/TabBarSticky';
-// import TrackPreview from './components/TrackPreview';
-
 const Tabs = () => {
   const { state, dispatch } = useContext(AppContext);
 
