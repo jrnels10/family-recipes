@@ -83,6 +83,8 @@ const AppContextProvider = ({ children }: any) => {
     dispatch(setPopularRecipes(recipes));
   };
 
+  const getFullRecipe = async () => {};
+
   const getRecipes = async () => {
     const recipes = await recipeService.getRecipes();
     dispatch(setRecipesList(recipes));
@@ -101,20 +103,20 @@ const AppContextProvider = ({ children }: any) => {
 
   const setFavoriteRecipe = async (recipe: IRecipe) => {
     const favRecipe = await recipeService.favoriteRecipe(recipe.id);
+    debugger;
     if (favRecipe) {
-      dispatch(setFavorite(favRecipe));
+      setViewerRecipe(favRecipe.id);
     }
   };
 
-  const setViewerRecipe = (recipe: IRecipe) => {
-    dispatch(setViewer(recipe));
-    history.push(`/view/${recipe.id}`);
+  const setViewerRecipe = async (id: number) => {
+    const res = await recipeService.getRecipes(id);
+    dispatch(setViewer(res));
+    history.push(`/view/${res.id}`);
   };
 
   const fetchUserData = async () => {
     let userData = await recipeService.createUser(user);
-    console.log(userData);
-
     return userData;
   };
 

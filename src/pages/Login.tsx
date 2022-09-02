@@ -16,7 +16,7 @@ import {
 import React, { useContext, useRef, useState } from "react";
 
 import { AppContext } from "../context/Context";
-
+import { Browser } from "@capacitor/browser";
 import { login } from "../Auth";
 import urls from "../urls";
 
@@ -24,9 +24,16 @@ import "./Form.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { buildAuthorizeUrl, loginWithRedirect } = useAuth0();
 
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+  const login = async () => {
+    // Ask auth0-react to build the login URL
+    const url = await buildAuthorizeUrl();
+
+    // Redirect using Capacitor's Browser plugin
+    await Browser.open({ url });
+  };
+  return <button onClick={login}>Log In</button>;
 };
 
 const LogoutButton = () => {

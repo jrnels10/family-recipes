@@ -3,7 +3,8 @@ import { RecipeService } from "../services/recipe-api";
 
 export interface IRecipe {
     id: number;
-    popular: boolean;
+    likedcount: number;
+    userliked: boolean;
     title: string;
     created: moment.Moment;
     image: string;
@@ -22,5 +23,5 @@ export interface IContext {
     createRecipe: (recipe: CreateRecipe) => any;
     getPopularRecipes: () => void;
     setFavoriteRecipe: (recipe: IRecipe) => any;
-    setViewerRecipe:(recipe: IRecipe) => void;
+    setViewerRecipe:(id: number) => void;
 }

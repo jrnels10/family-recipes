@@ -16,27 +16,37 @@ import {
   IonThumbnail,
   IonCard,
   IonIcon,
+  IonSkeletonText,
 } from "@ionic/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext, setViewer } from "../context/Context";
 import { img } from "../util";
 import moment from "moment";
 import { BoxedImage } from "../components/Images";
 
 export const Home = () => {
-  const { isAuthenticated, getIdTokenClaims, user } = useAuth0();
   const { state, dispatch, getPopularRecipes, getRecipes, setViewerRecipe } =
     useContext(AppContext);
-  const popularRecipes = state.popularRecipes;
-  const recentRecipes = state.recipes
+  const [loading, setLoading] = useState(true);
+  const { popularRecipes, recipes } = state;
+  const recentRecipes = recipes
     .filter((recipe) => {
       return moment(recipe.created).isAfter(moment().subtract(30, "days"));
     })
     .sort((a, b) => moment(b.created).diff(moment(a.created)));
+
   useEffect(() => {
     getPopularRecipes();
     getRecipes();
   }, []);
+
+  useEffect(() => {
+    if (recipes.length || popularRecipes.length) {
+      setLoading(false);
+    }
+  }, [recipes, popularRecipes]);
+
+  console.log(popularRecipes);
   return (
     <IonPage>
       <IonHeader>
@@ -49,10 +59,11 @@ export const Home = () => {
           <IonListHeader>
             <IonLabel>Popular</IonLabel>
           </IonListHeader>
+          {loading && <PopularSkeleton />}
           {popularRecipes.map((recipe) => (
             <IonItem
               key={recipe.id}
-              onClick={() => setViewerRecipe(recipe)}
+              onClick={() => setViewerRecipe(recipe.id)}
               button
             >
               <IonThumbnail slot="start">
@@ -66,6 +77,10 @@ export const Home = () => {
               </IonThumbnail>
               <IonLabel>
                 <h2>{recipe.title}</h2>
+                <p>
+                  {recipe.likedcount}{" "}
+                  {`like${recipe.likedcount.toString() !== "1" ? "s" : ""}`}
+                </p>
               </IonLabel>
             </IonItem>
           ))}
@@ -77,12 +92,13 @@ export const Home = () => {
           </IonListHeader>
           <IonGrid>
             <IonRow>
+              {loading && <RecentSkeletion />}
               {recentRecipes.map((recipe) => (
                 <IonCol
                   size="6"
                   className="new-track"
                   key={recipe.title}
-                  onClick={() => setViewerRecipe(recipe)}
+                  onClick={() => setViewerRecipe(recipe.id)}
                 >
                   <BoxedImage image={img(recipe.image)} alt="recipe recipe" />
                   <IonItem lines="none">
@@ -98,5 +114,43 @@ export const Home = () => {
         </IonList>
       </IonContent>
     </IonPage>
+  );
+};
+
+const PopularSkeleton = () => {
+  return (
+    <>
+      {[1, 2, 3].map((num) => (
+        <IonItem key={num}>
+          <IonThumbnail slot="start" style={{ margin: "10px 10px 0px 0px" }}>
+            <IonSkeletonText
+              animated
+              style={{ width: "100%", height: "40px" }}
+            />
+          </IonThumbnail>
+          <IonLabel>
+            <IonSkeletonText
+              animated
+              style={{ width: "100%", height: "40px" }}
+            />
+          </IonLabel>
+        </IonItem>
+      ))}
+    </>
+  );
+};
+
+const RecentSkeletion = () => {
+  return (
+    <>
+      {[1, 2, 3, 4].map((num) => (
+        <IonCol size="6" className="new-track" key={num}>
+          <IonSkeletonText
+            animated
+            style={{ width: "100%", height: "150px", borderRadius: "5px" }}
+          />
+        </IonCol>
+      ))}
+    </>
   );
 };

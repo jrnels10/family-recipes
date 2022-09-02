@@ -19,12 +19,9 @@ export class RecipeService extends BaseHttpService {
     return popularRecipes.data;
   }
 
-  async getRecipes(text?:string) {
-    if (text) {
-      
-      // return sampleRecipes.filter(recipe => recipe.title.includes(text))
-    }
-  const allRecipes:any= await this.get(`${this.BASE_URL}/recipes`)
+  async getRecipes(id?:number) {
+    const recipeId:string = id?id.toString():''
+  const allRecipes:any= await this.get(`${this.BASE_URL}/recipes/${recipeId}`)
     return allRecipes.data;
   }
 
@@ -38,9 +35,9 @@ export class RecipeService extends BaseHttpService {
   }
 
   async favoriteRecipe(id: number) {
-   const res:any= await this.post(`${this.BASE_URL}/favorite`, {id})
+   const res:any= await this.post(`${this.BASE_URL}/recipes/like/${id}`)
     if (res) {
-      return res as IRecipe;
+      return res.data as IRecipe;
    }
   }
 }
